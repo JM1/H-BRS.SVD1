@@ -1,0 +1,8 @@
+# Ignore KDevelop 4 project files
+*.kdev4
+.kdev4/
+
+# Ignore generated files
+build/
+
+!.gitignore
