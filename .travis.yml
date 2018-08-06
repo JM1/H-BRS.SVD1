@@ -1,0 +1,118 @@
+dist: trusty
+sudo: false
+
+notifications:
+  email: false
+
+language: generic
+
+env:
+  global:
+    - INSTALL_PREFIX=~/Install
+    - BUILD_TYPE=Debug
+    #- BUILD_TYPE=MinSizeRel
+    #- BUILD_TYPE=RelWithDebInfo
+    #- BUILD_TYPE=Release
+
+matrix:
+  include:
+    - addons:
+        apt:
+          sources:
+            #- ubuntu-toolchain-r-test
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            #- sourceline: 'ppa:mhier/libboost-latest'
+            - sourceline: 'ppa:rakhimov/boost'
+          packages:
+            - lynx
+            - gcc-7
+            - g++-7
+            - libstdc++-7-dev
+            #- libboost1.[6789]+*-dev
+            - libboost1.61-all-dev
+      env:
+        - CC=gcc-7 CXX=g++-7
+    - addons:
+        apt:
+          sources:
+            #- ubuntu-toolchain-r-test
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            #- sourceline: 'ppa:mhier/libboost-latest'
+            - sourceline: 'ppa:rakhimov/boost'
+          packages:
+            - lynx
+            - gcc-8
+            - g++-8
+            - libstdc++-8-dev
+            #- libboost1.[6789]+*-dev
+            - libboost1.61-all-dev
+      env:
+        - CC=gcc-8 CXX=g++-8
+    - addons:
+        apt:
+          sources:
+            #- ubuntu-toolchain-r-test
+            #- llvm-toolchain-trusty-6.0
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main'
+              key_url: http://apt.llvm.org/llvm-snapshot.gpg.key
+            #- sourceline: 'ppa:mhier/libboost-latest'
+            - sourceline: 'ppa:rakhimov/boost'
+          packages:
+            - lynx
+            - libstdc++-8-dev
+            - clang-6.0
+            #- libboost1.[6789]+*-dev
+            - libboost1.61-all-dev
+      env:
+        - CC=clang-6.0 CXX=clang++-6.0
+    - addons:
+        apt:
+          sources:
+            #- ubuntu-toolchain-r-test
+            #- llvm-toolchain-trusty
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main'
+              key_url: http://apt.llvm.org/llvm-snapshot.gpg.key
+            #- sourceline: 'ppa:mhier/libboost-latest'
+            - sourceline: 'ppa:rakhimov/boost'
+          packages:
+            - lynx
+            - libstdc++-8-dev
+            - clang
+            #- libboost1.[6789]+*-dev
+            - libboost1.61-all-dev
+      env:
+        - CC=clang CXX=clang++
+
+install:
+  # latest cmake is required for latest boost libraries
+  - echo $PATH
+  - echo $PWD
+  - >
+    if [ ! -d ~/.local ]; then 
+        mkdir ~/.local; 
+    fi;
+    
+    lynx -listonly -dump https://cmake.org/files/LatestRelease/ |
+      awk '/^[ ]*[1-9][0-9]*\./{sub("^ [^.]*.[ ]*","",$0); print;}' |
+      grep '.*\/cmake-[0-9]*\.[0-9]*\.[0-9]*-Linux-x86_64\.tar\.gz' |
+      tail -n 1 |
+      xargs curl -s |
+      tar -x -z --strip-components 1 -C ~/.local
+
+script:
+#  - set -o errexit
+  - nproc
+  - echo `which $CC`
+  - echo `which $CXX`
+  - cmake --version
+  - ctest --version
+  - >
+    mkdir build && cd build &&
+    (
+      cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DHBRS_SVD1_ENABLE_TESTS=ON .. || 
+        (cat CMakeFiles/CMakeError.log; travis_terminate 1)
+    ) &&
+    make -j$(nproc) &&
+    ctest --output-on-failure
