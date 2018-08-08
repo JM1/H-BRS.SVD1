@@ -8,82 +8,60 @@ language: generic
 
 env:
   global:
-    - INSTALL_PREFIX=~/Install
-    - BUILD_TYPE=Debug
-    #- BUILD_TYPE=MinSizeRel
-    #- BUILD_TYPE=RelWithDebInfo
-    #- BUILD_TYPE=Release
+    - INSTALL_PREFIX=~/.local
+    - PATH=/usr/lib/ccache:$PATH
+
+cache:
+  directories:
+    - $HOME/.ccache
 
 matrix:
   include:
-    - addons:
-        apt:
-          sources:
-            #- ubuntu-toolchain-r-test
-            - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            #- sourceline: 'ppa:mhier/libboost-latest'
-            - sourceline: 'ppa:rakhimov/boost'
-          packages:
-            - lynx
-            - gcc-7
-            - g++-7
-            - libstdc++-7-dev
-            #- libboost1.[6789]+*-dev
-            - libboost1.61-all-dev
-      env:
-        - CC=gcc-7 CXX=g++-7
-    - addons:
-        apt:
-          sources:
-            #- ubuntu-toolchain-r-test
-            - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            #- sourceline: 'ppa:mhier/libboost-latest'
-            - sourceline: 'ppa:rakhimov/boost'
-          packages:
-            - lynx
-            - gcc-8
-            - g++-8
-            - libstdc++-8-dev
-            #- libboost1.[6789]+*-dev
-            - libboost1.61-all-dev
-      env:
-        - CC=gcc-8 CXX=g++-8
-    - addons:
-        apt:
-          sources:
-            #- ubuntu-toolchain-r-test
-            #- llvm-toolchain-trusty-6.0
-            - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main'
-              key_url: http://apt.llvm.org/llvm-snapshot.gpg.key
-            #- sourceline: 'ppa:mhier/libboost-latest'
-            - sourceline: 'ppa:rakhimov/boost'
-          packages:
-            - lynx
-            - libstdc++-8-dev
-            - clang-6.0
-            #- libboost1.[6789]+*-dev
-            - libboost1.61-all-dev
-      env:
-        - CC=clang-6.0 CXX=clang++-6.0
-    - addons:
-        apt:
-          sources:
-            #- ubuntu-toolchain-r-test
-            #- llvm-toolchain-trusty
-            - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main'
-              key_url: http://apt.llvm.org/llvm-snapshot.gpg.key
-            #- sourceline: 'ppa:mhier/libboost-latest'
-            - sourceline: 'ppa:rakhimov/boost'
-          packages:
-            - lynx
-            - libstdc++-8-dev
-            - clang
-            #- libboost1.[6789]+*-dev
-            - libboost1.61-all-dev
-      env:
-        - CC=clang CXX=clang++
+    # GCC 7
+    - env: CC=gcc-7 CXX=g++-7 BUILD_TYPE=Debug
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-7-dev", "libboost1.61-all-dev" , "gcc-7", "g++-7" ]
+      } }
+
+    # GCC 8
+    - env: CC=gcc-8 CXX=g++-8 BUILD_TYPE=Debug
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-8-dev", "libboost1.61-all-dev", "gcc-8", "g++-8" ]
+      } }
+
+    # Clang 6.0
+    - env: CC=clang-6.0 CXX=clang++-6.0 BUILD_TYPE=Debug
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", "llvm-toolchain-trusty-6.0", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-8-dev", "libboost1.61-all-dev", "clang-6.0" ]
+      } }
+
+    # Clang trunk
+    - env: CC=clang CXX=clang++ BUILD_TYPE=Debug
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", "llvm-toolchain-trusty", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-8-dev", "libboost1.61-all-dev", "clang" ]
+      } }
+
+    - env: CC=clang CXX=clang++ BUILD_TYPE=MinSizeRel
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", "llvm-toolchain-trusty", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-8-dev", "libboost1.61-all-dev", "clang" ]
+      } }
+
+    - env: CC=clang CXX=clang++ BUILD_TYPE=RelWithDebInfo
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", "llvm-toolchain-trusty", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-8-dev", "libboost1.61-all-dev", "clang" ]
+      } }
+
+    - env: CC=clang CXX=clang++ BUILD_TYPE=Release
+      addons: { apt: { 
+        sources: [ "ubuntu-toolchain-r-test", "llvm-toolchain-trusty", { sourceline: "ppa:rakhimov/boost" }, { sourceline: "ppa:dzombie/ccache" } ],
+        packages: [ "lynx", "ccache", "libstdc++-8-dev", "libboost1.61-all-dev", "clang" ]
+      } }
 
 install:
   # latest cmake is required for latest boost libraries
@@ -101,13 +79,28 @@ install:
       xargs curl -s |
       tar -x -z --strip-components 1 -C ~/.local
 
-script:
-#  - set -o errexit
+before_script:
+  # ccache symlinks are created in "before_script:" section because they are lost after "install:" section
+  # manually add symlinks to versioned clang because of https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=867705
+  - >
+    sudo update-ccache-symlinks &&
+    for cc in /usr/bin/clang-[0-9\.]* /usr/bin/clang++-[0-9\.]* ; do
+        if [ -e "$cc" ]; then
+          lnk=$(basename "$cc");
+          if [ ! -e "/usr/lib/ccache/$lnk" ]; then
+            sudo ln -s /usr/bin/ccache "/usr/lib/ccache/$lnk";
+          fi;
+        fi;
+    done
   - nproc
   - echo `which $CC`
   - echo `which $CXX`
   - cmake --version
   - ctest --version
+
+script:
+#  - set -o errexit
+  - ccache -s
   - >
     mkdir build && cd build &&
     (
@@ -115,4 +108,5 @@ script:
         (cat CMakeFiles/CMakeError.log; travis_terminate 1)
     ) &&
     make -j$(nproc) &&
-    ctest --output-on-failure
+    ctest --output-on-failure &&
+    ccache -s
