@@ -21,6 +21,7 @@
 
 #include <hbrs/svd1/config.hpp>
 #include <hbrs/svd1/fwd/dt/rtscm.hpp>
+#include <hbrs/svd1/fwd/dt/smr.hpp>
 #include <boost/hana/core/tag_of.hpp>
 
 HBRS_SVD1_NAMESPACE_BEGIN
@@ -34,6 +35,15 @@ template <
 >
 decltype(auto)
 size(Matrix && m);
+
+template <
+	typename Sequence,
+	typename std::enable_if_t< 
+		std::is_same< hana::tag_of_t<Sequence>, smr_tag >::value
+	>* = nullptr
+>
+constexpr decltype(auto)
+size(Sequence && s);
 
 HBRS_SVD1_NAMESPACE_END
 

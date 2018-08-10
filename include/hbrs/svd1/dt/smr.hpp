@@ -77,7 +77,7 @@ struct smr {
 	}
 	
 	constexpr auto
-	length() const {
+	size() const {
 		using svd1::n;
 		return n(a_);
 	}

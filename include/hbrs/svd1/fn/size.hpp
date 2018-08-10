@@ -35,6 +35,17 @@ size(Matrix && m) {
 	return std::forward<Matrix>(m).size();
 }
 
+template <
+	typename Sequence,
+	typename std::enable_if_t< 
+		std::is_same< hana::tag_of_t<Sequence>, smr_tag >::value
+	>*
+>
+constexpr decltype(auto)
+size(Sequence && s) {
+	return std::forward<Sequence>(m).size();
+}
+
 HBRS_SVD1_NAMESPACE_END
 
 #endif // !HBRS_SVD1_FN_SIZE_HPP
