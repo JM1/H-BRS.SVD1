@@ -24,8 +24,8 @@
 #include <hbrs/svd1/dt/matrix_size.hpp>
 #include <hbrs/svd1/dt/smr.hpp>
 #include <hbrs/svd1/dt/storage_order.hpp>
-#include <hbrs/svd1/fn/matrix/m.hpp>
-#include <hbrs/svd1/fn/matrix/n.hpp>
+#include <hbrs/svd1/fn/m.hpp>
+#include <hbrs/svd1/fn/n.hpp>
 
 #include <boost/hana/core/make.hpp>
 #include <boost/hana/core/to.hpp>

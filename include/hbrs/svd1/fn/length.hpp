@@ -16,10 +16,10 @@
 
 #pragma once
 
-#ifndef HBRS_SVD1_FN_SEQUENCE_LENGTH_HPP
-#define HBRS_SVD1_FN_SEQUENCE_LENGTH_HPP
+#ifndef HBRS_SVD1_FN_LENGTH_HPP
+#define HBRS_SVD1_FN_LENGTH_HPP
 
-#include <hbrs/svd1/fwd/fn/sequence/length.hpp>
+#include <hbrs/svd1/fwd/fn/length.hpp>
 
 HBRS_SVD1_NAMESPACE_BEGIN
 namespace hana = boost::hana;
@@ -37,4 +37,4 @@ length(Sequence && s) {
 
 HBRS_SVD1_NAMESPACE_END
 
-#endif // !HBRS_SVD1_FN_SEQUENCE_LENGTH_HPP
+#endif // !HBRS_SVD1_FN_LENGTH_HPP

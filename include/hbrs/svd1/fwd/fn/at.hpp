@@ -16,10 +16,13 @@
 
 #pragma once
 
-#ifndef HBRS_SVD1_FN_MATRIX_SIZE_HPP
-#define HBRS_SVD1_FN_MATRIX_SIZE_HPP
+#ifndef HBRS_SVD1_FWD_FN_AT_HPP
+#define HBRS_SVD1_FWD_FN_AT_HPP
 
-#include <hbrs/svd1/fwd/fn/matrix/size.hpp>
+#include <hbrs/svd1/config.hpp>
+#include <hbrs/svd1/fwd/dt/rtscm.hpp>
+#include <hbrs/svd1/fwd/dt/smr.hpp>
+#include <boost/hana/core/tag_of.hpp>
 
 HBRS_SVD1_NAMESPACE_BEGIN
 namespace hana = boost::hana;
@@ -28,13 +31,21 @@ template <
 	typename Matrix,
 	typename std::enable_if_t< 
 		std::is_same< hana::tag_of_t<Matrix>, rtscm_tag >::value
-	>*
+	>* = nullptr
 >
 decltype(auto)
-size(Matrix && m) {
-	return std::forward<Matrix>(m).size();
-}
+at(Matrix && m, matrix_index<std::size_t, std::size_t> const& i);
+
+template <
+	typename Matrix,
+	typename Index,
+	typename std::enable_if_t< 
+		std::is_same< hana::tag_of_t<Matrix>, smr_tag >::value
+	>* = nullptr
+>
+constexpr decltype(auto)
+at(Matrix && m, Index && i);
 
 HBRS_SVD1_NAMESPACE_END
 
-#endif // !HBRS_SVD1_FN_MATRIX_SIZE_HPP
+#endif // !HBRS_SVD1_FWD_FN_AT_HPP

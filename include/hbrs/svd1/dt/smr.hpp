@@ -21,8 +21,8 @@
 
 #include <hbrs/svd1/fwd/dt/smr.hpp>
 #include <hbrs/svd1/dt/matrix_index.hpp>
-#include <hbrs/svd1/fn/function/at.hpp>
-#include <hbrs/svd1/fn/matrix/n.hpp>
+#include <hbrs/svd1/fn/at.hpp>
+#include <hbrs/svd1/fn/n.hpp>
 
 #include <boost/hana/core/make.hpp>
 #include <boost/hana/core/to.hpp>

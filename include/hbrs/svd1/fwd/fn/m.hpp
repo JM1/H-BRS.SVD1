@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Jakob Meng, <jakobmeng@web.de>
+/* Copyright (c) 2016 Jakob Meng, <jakobmeng@web.de>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +16,27 @@
 
 #pragma once
 
-#ifndef HBRS_SVD1_FWD_FN_MATRIX_SIZE_HPP
-#define HBRS_SVD1_FWD_FN_MATRIX_SIZE_HPP
+#ifndef HBRS_SVD1_FWD_FN_M_HPP
+#define HBRS_SVD1_FWD_FN_M_HPP
 
 #include <hbrs/svd1/config.hpp>
-#include <hbrs/svd1/fwd/dt/rtscm.hpp>
+#include <hbrs/svd1/fwd/dt/matrix_index.hpp>
+#include <hbrs/svd1/fwd/dt/matrix_size.hpp>
 #include <boost/hana/core/tag_of.hpp>
 
 HBRS_SVD1_NAMESPACE_BEGIN
 namespace hana = boost::hana;
 
 template <
-	typename Matrix,
+	typename MatrixAxis,
 	typename std::enable_if_t< 
-		std::is_same< hana::tag_of_t<Matrix>, rtscm_tag >::value
+		std::is_same< hana::tag_of_t<MatrixAxis>, matrix_index_tag >::value ||
+		std::is_same< hana::tag_of_t<MatrixAxis>, matrix_size_tag >::value
 	>* = nullptr
 >
-decltype(auto)
-size(Matrix && m);
+constexpr decltype(auto)
+m(MatrixAxis && a);
 
 HBRS_SVD1_NAMESPACE_END
 
-#endif // !HBRS_SVD1_FWD_FN_MATRIX_SIZE_HPP
+#endif // !HBRS_SVD1_FWD_FN_M_HPP

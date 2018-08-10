@@ -17,10 +17,10 @@
 #include <hbrs/svd1/dt/rtscm.hpp>
 
 #include "../data.hpp"
-#include <hbrs/svd1/fn/matrix/size.hpp>
-#include <hbrs/svd1/fn/matrix/m.hpp>
-#include <hbrs/svd1/fn/matrix/n.hpp>
-#include <hbrs/svd1/fn/function/at.hpp>
+#include <hbrs/svd1/fn/size.hpp>
+#include <hbrs/svd1/fn/m.hpp>
+#include <hbrs/svd1/fn/n.hpp>
+#include <hbrs/svd1/fn/at.hpp>
 
 #define BOOST_TEST_MODULE rtscm_test
 #define BOOST_TEST_DYN_LINK

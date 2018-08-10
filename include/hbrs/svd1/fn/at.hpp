@@ -16,28 +16,39 @@
 
 #pragma once
 
-#ifndef HBRS_SVD1_FN_MATRIX_M_HPP
-#define HBRS_SVD1_FN_MATRIX_M_HPP
+#ifndef HBRS_SVD1_FN_AT_HPP
+#define HBRS_SVD1_FN_AT_HPP
 
-#include <hbrs/svd1/fwd/fn/matrix/m.hpp>
-#include <hbrs/svd1/dt/matrix_index.hpp>
-#include <hbrs/svd1/dt/matrix_size.hpp>
+#include <hbrs/svd1/fwd/fn/at.hpp>
+
+#include <type_traits>
 
 HBRS_SVD1_NAMESPACE_BEGIN
 namespace hana = boost::hana;
 
 template <
-	typename MatrixAxis,
+	typename Matrix,
 	typename std::enable_if_t< 
-		std::is_same< hana::tag_of_t<MatrixAxis>, matrix_index_tag >::value ||
-		std::is_same< hana::tag_of_t<MatrixAxis>, matrix_size_tag >::value
+		std::is_same< hana::tag_of_t<Matrix>, rtscm_tag >::value
+	>*
+>
+decltype(auto)
+at(Matrix && m, matrix_index<std::size_t, std::size_t> const& i) {
+	return std::forward<Matrix>(m).at(i);
+}
+
+template <
+	typename Matrix,
+	typename Index,
+	typename std::enable_if_t< 
+		std::is_same< hana::tag_of_t<Matrix>, smr_tag >::value
 	>*
 >
 constexpr decltype(auto)
-m(MatrixAxis && a) {
-	return std::forward<MatrixAxis>(a).m();
+at(Matrix && m, Index && i) {
+	return std::forward<Matrix>(m).at(std::forward<Index>(i));
 }
 
 HBRS_SVD1_NAMESPACE_END
 
-#endif // !HBRS_SVD1_FN_MATRIX_M_HPP
+#endif // !HBRS_SVD1_FN_AT_HPP

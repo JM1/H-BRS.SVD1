@@ -16,25 +16,28 @@
 
 #pragma once
 
-#ifndef HBRS_SVD1_FWD_FN_SEQUENCE_LENGTH_HPP
-#define HBRS_SVD1_FWD_FN_SEQUENCE_LENGTH_HPP
+#ifndef HBRS_SVD1_FN_M_HPP
+#define HBRS_SVD1_FN_M_HPP
 
-#include <hbrs/svd1/config.hpp>
-#include <hbrs/svd1/fwd/dt/smr.hpp>
-#include <boost/hana/core/tag_of.hpp>
+#include <hbrs/svd1/fwd/fn/m.hpp>
+#include <hbrs/svd1/dt/matrix_index.hpp>
+#include <hbrs/svd1/dt/matrix_size.hpp>
 
 HBRS_SVD1_NAMESPACE_BEGIN
 namespace hana = boost::hana;
 
 template <
-	typename Sequence,
+	typename MatrixAxis,
 	typename std::enable_if_t< 
-		std::is_same< hana::tag_of_t<Sequence>, smr_tag >::value
-	>* = nullptr
+		std::is_same< hana::tag_of_t<MatrixAxis>, matrix_index_tag >::value ||
+		std::is_same< hana::tag_of_t<MatrixAxis>, matrix_size_tag >::value
+	>*
 >
 constexpr decltype(auto)
-length(Sequence && s);
+m(MatrixAxis && a) {
+	return std::forward<MatrixAxis>(a).m();
+}
 
 HBRS_SVD1_NAMESPACE_END
 
-#endif // !HBRS_SVD1_FWD_FN_SEQUENCE_LENGTH_HPP
+#endif // !HBRS_SVD1_FN_M_HPP
