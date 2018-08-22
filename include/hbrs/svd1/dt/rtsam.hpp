@@ -72,15 +72,15 @@ struct rtsam {
 	
 	template<typename Index>
 	auto
-	operator[](Index && i) & { return make_smr(*this, std::forward<Index>(i)); }
+	operator[](Index && i) & { return smr<rtsam &, std::decay_t<Index>>{*this, std::forward<Index>(i)}; }
 	
 	template<typename Index>
 	auto
-	operator[](Index && i) const& { return make_smr(*this, std::forward<Index>(i)); }
+	operator[](Index && i) const& { return smr<rtsam const&, std::decay_t<Index>>{*this, std::forward<Index>(i)}; }
 	
 	template<typename Index>
 	auto
-	operator[](Index && i) && { return make_smr(*this, std::forward<Index>(i)); }
+	operator[](Index && i) && { return make_smr(std::move(*this), std::forward<Index>(i)); }
 	
 private:
 	template<

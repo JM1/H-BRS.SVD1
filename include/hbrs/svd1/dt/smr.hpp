@@ -114,27 +114,11 @@ namespace boost { namespace hana {
 
 template <>
 struct make_impl<hbrs::svd1::smr_tag> {
-	template<
-		typename Matrix,
-		typename Index,
-		typename std::enable_if_t< !std::is_lvalue_reference<Matrix&&>::value >* = nullptr
-	>
-	static constexpr hbrs::svd1::smr< Matrix, std::decay_t<Index> >
+	template<typename Matrix, typename Index>
+	static constexpr hbrs::svd1::smr< std::decay_t<Matrix>, std::decay_t<Index> >
 	apply(Matrix && a, Index && row) {
 		return {std::forward<Matrix>(a), std::forward<Index>(row)};
 	}
-	
-	template<
-		typename Matrix,
-		typename Index,
-		typename std::enable_if_t< std::is_lvalue_reference<Matrix&&>::value >* = nullptr
-		/* a matrix row cannot exist without a matrix */
-	>
-	static constexpr hbrs::svd1::smr< Matrix&&, std::decay_t<Index> >
-	apply(Matrix && a, Index && row) {
-		return {std::forward<Matrix>(a), std::forward<Index>(row)};
-	}
-	
 };
 
 /* namespace hana */ } /* namespace boost */ }
