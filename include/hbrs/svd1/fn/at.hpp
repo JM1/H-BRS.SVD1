@@ -29,7 +29,7 @@ namespace hana = boost::hana;
 template <
 	typename Matrix,
 	typename std::enable_if_t< 
-		std::is_same< hana::tag_of_t<Matrix>, rtscm_tag >::value
+		std::is_same< hana::tag_of_t<Matrix>, rtsam_tag >::value
 	>*
 >
 decltype(auto)

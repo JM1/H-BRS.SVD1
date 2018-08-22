@@ -5,7 +5,7 @@
 #
 
 add_library(hbrs_svd1 STATIC
-	dt/rtscm.cpp
+	dt/rtsam.cpp
 )
 
 target_include_directories(hbrs_svd1

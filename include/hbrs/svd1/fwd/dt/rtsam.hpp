@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Jakob Meng, <jakobmeng@web.de>
+/* Copyright (c) 2016-2018 Jakob Meng, <jakobmeng@web.de>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,13 +14,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <hbrs/svd1/dt/rtscm.hpp>
+#pragma once
+
+#ifndef HBRS_SVD1_FWD_DT_RTSAM_HPP
+#define HBRS_SVD1_FWD_DT_RTSAM_HPP
+
+#include <hbrs/svd1/config.hpp>
+#include <boost/hana/fwd/core/make.hpp>
+#include <boost/hana/fwd/core/to.hpp>
+#include <hbrs/svd1/fwd/dt/storage_order.hpp>
 
 HBRS_SVD1_NAMESPACE_BEGIN
-template struct rtscm<int, storage_order::row_major>;
-template struct rtscm<int, storage_order::column_major>;
-template struct rtscm<float, storage_order::row_major>;
-template struct rtscm<float, storage_order::column_major>;
-template struct rtscm<double, storage_order::row_major>;
-template struct rtscm<double, storage_order::column_major>;
+namespace hana = boost::hana;
+
+/* runtime-size array/sequence/continuous matrix */
+template<typename /* type of matrix entries */ Ring, storage_order Order>
+struct rtsam;
+struct rtsam_tag{};
+constexpr auto make_rtsam = hana::make<rtsam_tag>;
+constexpr auto to_rtsam = hana::to<rtsam_tag>;
+
 HBRS_SVD1_NAMESPACE_END
+
+#endif // !HBRS_SVD1_FWD_DT_RTSAM_HPP

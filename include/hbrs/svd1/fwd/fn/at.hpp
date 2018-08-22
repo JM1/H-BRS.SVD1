@@ -20,7 +20,7 @@
 #define HBRS_SVD1_FWD_FN_AT_HPP
 
 #include <hbrs/svd1/config.hpp>
-#include <hbrs/svd1/fwd/dt/rtscm.hpp>
+#include <hbrs/svd1/fwd/dt/rtsam.hpp>
 #include <hbrs/svd1/fwd/dt/smr.hpp>
 #include <boost/hana/core/tag_of.hpp>
 
@@ -30,7 +30,7 @@ namespace hana = boost::hana;
 template <
 	typename Matrix,
 	typename std::enable_if_t< 
-		std::is_same< hana::tag_of_t<Matrix>, rtscm_tag >::value
+		std::is_same< hana::tag_of_t<Matrix>, rtsam_tag >::value
 	>* = nullptr
 >
 decltype(auto)

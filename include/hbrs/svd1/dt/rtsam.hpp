@@ -16,10 +16,10 @@
 
 #pragma once
 
-#ifndef HBRS_SVD1_DT_RTSCM_HPP
-#define HBRS_SVD1_DT_RTSCM_HPP
+#ifndef HBRS_SVD1_DT_RTSAM_HPP
+#define HBRS_SVD1_DT_RTSAM_HPP
 
-#include <hbrs/svd1/fwd/dt/rtscm.hpp>
+#include <hbrs/svd1/fwd/dt/rtsam.hpp>
 #include <hbrs/svd1/dt/matrix_index.hpp>
 #include <hbrs/svd1/dt/matrix_size.hpp>
 #include <hbrs/svd1/dt/smr.hpp>
@@ -39,18 +39,18 @@ template<
 	typename /* type of matrix entries */ Ring,
 	storage_order Order
 >
-struct rtscm {
-	rtscm(matrix_size<std::size_t, std::size_t> sz) : rtscm(sz.m(), sz.n()) {}
+struct rtsam {
+	rtsam(matrix_size<std::size_t, std::size_t> sz) : rtsam(sz.m(), sz.n()) {}
 	
-	rtscm(std::size_t m, std::size_t n) : data_(m * n, Ring{0}), size_{m,n} {}
+	rtsam(std::size_t m, std::size_t n) : data_(m * n, Ring{0}), size_{m,n} {}
 	
-	rtscm(rtscm const&) = default;
-	rtscm(rtscm &&) = default;
+	rtsam(rtsam const&) = default;
+	rtsam(rtsam &&) = default;
 	
-	rtscm&
-	operator=(rtscm const&) = default;
-	rtscm&
-	operator=(rtscm &&) = default;
+	rtsam&
+	operator=(rtsam const&) = default;
+	rtsam&
+	operator=(rtsam &&) = default;
 	
 	auto const&
 	size() const { return size_; };
@@ -119,17 +119,17 @@ template <
 	typename Ring,
 	hbrs::svd1::storage_order Order
 >
-struct tag_of< hbrs::svd1::rtscm<Ring, Order> > {
-	using type = hbrs::svd1::rtscm_tag;
+struct tag_of< hbrs::svd1::rtsam<Ring, Order> > {
+	using type = hbrs::svd1::rtsam_tag;
 };
 
 template <>
-struct make_impl<hbrs::svd1::rtscm_tag> {
+struct make_impl<hbrs::svd1::rtsam_tag> {
 	template <
 		typename Ring,
 		hbrs::svd1::storage_order Order
 	>
-	static hbrs::svd1::rtscm<Ring, Order>
+	static hbrs::svd1::rtsam<Ring, Order>
 	apply(hana::basic_type<Ring>, hbrs::svd1::matrix_size<std::size_t, std::size_t> sz, hbrs::svd1::storage_order_<Order>) {
 		return {sz};
 	}
@@ -137,4 +137,4 @@ struct make_impl<hbrs::svd1::rtscm_tag> {
 
 /* namespace hana */ } /* namespace boost */ }
 
-#endif // !HBRS_SVD1_DT_RTSCM_HPP
+#endif // !HBRS_SVD1_DT_RTSAM_HPP
