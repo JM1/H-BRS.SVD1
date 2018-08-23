@@ -79,7 +79,7 @@ struct smr {
 	constexpr auto
 	size() const {
 		using svd1::n;
-		return n(a_);
+		return n(size(a_));
 	}
 	
 	template<typename Index_>

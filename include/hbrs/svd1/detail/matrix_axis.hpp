@@ -77,16 +77,22 @@
 		operator=(cname &&) = default;                                                                                 \
 		                                                                                                               \
 		constexpr decltype(auto)                                                                                       \
-		m() { return m_; };                                                                                            \
+		m() & { return m_; };                                                                                          \
 		                                                                                                               \
 		constexpr decltype(auto)                                                                                       \
-		m() const { return m_; };                                                                                      \
+		m() const& { return m_; };                                                                                     \
 		                                                                                                               \
 		constexpr decltype(auto)                                                                                       \
-		n() { return n_; };                                                                                            \
+		m() && { return std::forward<tname ## M>(m_); };                                                               \
 		                                                                                                               \
 		constexpr decltype(auto)                                                                                       \
-		n() const { return n_; };                                                                                      \
+		n() & { return n_; };                                                                                          \
+		                                                                                                               \
+		constexpr decltype(auto)                                                                                       \
+		n() const& { return n_; };                                                                                     \
+		                                                                                                               \
+		constexpr decltype(auto)                                                                                       \
+		n() && { return std::forward<tname ## N>(n_); };                                                               \
 		                                                                                                               \
 	private:                                                                                                           \
 		tname ## M m_;                                                                                                 \
