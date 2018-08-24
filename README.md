@@ -14,10 +14,10 @@ docker --version
 git clone --depth 1 https://gist.github.com/ab8c3beea108ea14a6b8955050f36357.git
 export PATH="$PWD/ab8c3beea108ea14a6b8955050f36357/:$PATH"
 
-docker pull jm1337/debian-testing-kdevelop-dev
+docker pull jm1337/debian-testing-cpp-dev
 
 # log into docker container
-dockerctl run --login --systemd -- jm1337/debian-testing-kdevelop-dev
+dockerctl run --login --systemd -- jm1337/debian-testing-cpp-dev
 
 # an alternative, more sophisticated environment for development which 
 #  - enables gpu acceleration within container
@@ -26,7 +26,7 @@ dockerctl run --login --systemd -- jm1337/debian-testing-kdevelop-dev
 dockerctl run --login --x11 --gpu --systemd --                    \
   -v "$HOME":/tmp/VOLUMES/home:rw -e DEVIL_HOME=/tmp/VOLUMES/home \
   --security-opt seccomp=unconfined                               \
-  jm1337/debian-testing-kdevelop-dev
+  jm1337/debian-testing-cpp-dev
 
 # the following commands are executed within the docker container
 
